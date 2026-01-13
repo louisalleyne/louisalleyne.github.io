@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>AquiNeuro</title>
+
+  <!-- Tailwind CDN (dev only) -->
+  <script>
+    /* Tailwind CDN: inject custom theme colors before loading the runtime */
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = window.tailwind.config || {};
+    window.tailwind.config.theme = window.tailwind.config.theme || {};
+    window.tailwind.config.theme.extend = Object.assign({}, window.tailwind.config.theme.extend, {
+      colors: {
+        'aquineuro-dark': '#283242',
+        'aquineuro-blue': '#09AFFF',
+        'aquineuro-red': '#EB3F4D'
+      }
+    });
+  </script>
+  <script src="https://kit.fontawesome.com/746bd61ea5.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
+  <!-- Fontshare: Satoshi -->
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi:400,600,700&display=swap">
+  <!-- Font: Figtree (Google Fonts) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+
+  <style>
+    /* use Figtree as main font */
+    body {
+      padding-top: 0; /* allow nav to overlay the hero */
+      font-family: 'Figtree', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    }
+
+    /* Navbar gradient and solid states */
+    .nav-gradient {
+      background: linear-gradient(180deg, #283242 0%, rgba(40,50,66,0) 100%);
+      transition: background-color 180ms ease, box-shadow 180ms ease;
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+    }
+    .nav-solid {
+      background-color: #283242 !important;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    /* Ensure navbar sits above the hero */
+    #siteNav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; }
+
+    /* Hero layout */
+    #hero {
+      min-height: 100vh;
+      background-size: cover;
+      background-position: left center;
+      background-repeat: no-repeat;
+      position: relative;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(40,50,66,0.45);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ensure hero content sits above the overlay */
+    .hero-content { position: relative; z-index: 10; }
+
+    /* partners marquee */
+    .partners-title { color: #283242; margin-bottom: 1.5rem; }
+
+    .partner-marquee { overflow: hidden; position: relative; }
+
+    /* marquee container: single row, no wrapping */
+    .marquee {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      flex-wrap: nowrap;            /* prevent groups from wrapping to next line */
+      will-change: transform;
+      animation: marquee 32s linear infinite;
+    }
+
+    /* each group is an inline flex row (will be duplicated in markup) */
+    .marquee__group {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      flex: 0 0 auto;               /* keep each group at its intrinsic width */
+    }
+
+    .partner-item { display: inline-flex; align-items: center; justify-content: center; }
+    .partner-logo {
+      max-width: 140px; /* same max width for all logos */
+      height: auto;
+      display: block;
+      filter: none;
+      opacity: 0.95;
+    }
+
+    /* move the whole .marquee left by half its width (since there are two identical groups) */
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* pause on hover */
+    .partner-marquee:hover .marquee { animation-play-state: paused; }
+
+    /* partners marquee (fixed) */
+    .partners-wrap { padding-top: 3rem; padding-bottom: 3rem; background: #f7f7f8; }
+    .partners-title { color: #283242; margin-bottom: 1.5rem; }
+
+    .partner-marquee { overflow: hidden; position: relative; }
+
+    /* marquee is a single flex row that contains two identical groups */
+    .marquee {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      will-change: transform;
+      animation: marquee 48s linear infinite;
+    }
+
+    .marquee__group {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      flex: 0 0 auto; /* prevent groups from shrinking */
+    }
+
+    .partner-item { display: inline-flex; align-items: center; justify-content: center; }
+    .partner-logo {
+      max-width: 140px; /* same max width for all logos */
+      height: auto;
+      display: block;
+      filter: none;
+      opacity: 0.95;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-100%); } /* move left by half (since content duplicated) */
+    }
+
+    /* pause on hover */
+    .partner-marquee:hover .marquee { animation-play-state: paused; }
+
+    .partner-marquee { overflow: hidden; position: relative; }
+
+    /* single track that will translate left to -100% then snap (single-pass) */
+    .marquee {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      flex-wrap: nowrap;
+      will-change: transform;
+      animation: marquee-single 24s linear infinite;
+    }
+
+    .marquee__group {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .partner-item { display: inline-flex; align-items: center; justify-content: center; }
+    .partner-logo {
+      max-width: 175px;
+      height: auto;
+      display: block;
+      filter: none;
+      opacity: 0.95;
+    }
+
+    @keyframes marquee-single {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-100%); } /* move entire track left, then jump back to start */
+    }
+
+    /* pause on hover */
+    .partner-marquee:hover .marquee { animation-play-state: paused; }
+
+    /* article card overlay (for news / article tiles) */
+    .article-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .article-card .article-overlay {
+      position: absolute;
+      inset: 0;
+      /* transparent at top -> black at bottom */
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(11, 32, 51, 0.5) 38%, rgba(0,0,0,1) 100%);
+      z-index: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+    .article-card .article-content {
+      position: relative;
+      z-index: 10;
+      color: #ffffff;
+    }
+
+    /* Slide-right on hover for the chevron icon */
+    .fa-circle-arrow-right {
+      display: inline-block; /* required so transform applies predictably */
+      transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease;
+      transform: translateX(0);
+      will-change: transform;
+    }
+
+    .article-card:hover .fa-circle-arrow-right {
+      transform: translateX(8px); /* slide right on hover */
+      opacity: 1;
+    }
+
+    .product-card:hover .fa-circle-arrow-right {
+      transform: translateX(8px); /* slide right on hover */
+      opacity: 1;
+    }
+
+    /* optional: slightly darken overlay on hover */
+    .article-card:hover .article-overlay { opacity: 0.95; }
+
+    /* carousel track styles (JS will wrap items into .carousel-track) */
+    #article-carousel { position: relative; overflow: hidden; }
+    .carousel-track {
+      display: flex;
+      gap: 2rem; /* matches your .gap-8 (32px) layout; adjust if needed */
+      transition: transform 320ms cubic-bezier(.2,.9,.2,1);
+      will-change: transform;
+    }
+
+    /* disabled arrow */
+    button[disabled] {
+      opacity: 0.45;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .product-card .fa-circle-arrow-right {
+      display: inline-block;
+      transform: translateX(10px); /* start slightly right (off-screen) */
+      opacity: 0;
+      transition: transform 220ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease;
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+
+    /* show on hover or keyboard focus */
+    .product-card:hover .fa-circle-arrow-right,
+    .product-card:focus-within .fa-circle-arrow-right {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    /* Floating toggle */
+    .contact-toggle {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 9999px;
+      background: #09AFFF; /* aquineuro-blue */
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(2,10,35,0.18);
+      z-index: 60;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+    .contact-toggle:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(2,10,35,0.2); }
+
+    /* Popup */
+    .contact-popup {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      width: 380px;
+      max-width: calc(100% - 2rem);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 18px 50px rgba(10,20,40,0.28);
+      padding: 1rem;
+      z-index: 70;
+      opacity: 0;
+      transform: translateY(12px) scale(.98);
+      visibility: hidden;
+      transition: opacity 240ms ease, transform 240ms cubic-bezier(.2,.9,.2,1), visibility 240ms;
+      font-family: inherit;
+    }
+    .contact-popup.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      visibility: visible;
+    }
+
+    .contact-popup .contact-close {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    /* svg "morph" (fade+translate) */
+    .contact-toggle svg { width: 22px; height: 22px; display: block; }
+    .contact-toggle .icon-bubble,
+    .contact-toggle .icon-chevron {
+      transition: opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1);
+      transform-origin: center;
+      pointer-events: none;
+    }
+    .contact-toggle .icon-bubble { opacity: 1; transform: translateY(0) scale(1); }
+    .contact-toggle .icon-chevron { opacity: 0; transform: translateY(-6px) scale(.95); }
+    .contact-toggle.open .icon-bubble { opacity: 0; transform: translateY(-8px) scale(.92); }
+    .contact-toggle.open .icon-chevron { opacity: 1; transform: translateY(0) scale(1); }
+  </style>
+</head>
+
+<body class="">
+  
+  <nav id="siteNav" class="nav-gradient">
+    <div class="mx-auto px-6 py-4 flex items-center justify-between">
+      <!-- Left: logo -->
+      <div class="flex-shrink-0">
+        <a href="#" class="flex items-center" data-content="navLink">
+          <img src="https://aquineuro.eu/wp-content/themes/aquineuro/img/logo.svg" alt="Logo" class="w-24 mr-2" data-content="navImage" />
+        </a>
+      </div>
+
+      <!-- Middle: navigation links (centered block) -->
+      <div class="flex-1 flex justify-center">
+        <div class="inline-flex items-center space-x-4">
+          <div class="relative">
+            <button id="formationsBtn" type="button" aria-expanded="false"
+              class="text-white hover:text-blue-200 flex items-center space-x-1 focus:outline-none">
+              <span>Formations</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <div id="formationsDropdown" class="hidden absolute left-0 mt-2 w-48 bg-white rounded shadow-lg text-gray-800 z-50">
+              <a href="/formations/electrophysiologie.html" class="block px-4 py-2 hover:bg-gray-100">Électrophysiologie</a>
+              <a href="/formations/photometrie.html" class="block px-4 py-2 hover:bg-gray-100">Photométrie</a>
+              <a href="/formations/programmation.html" class="block px-4 py-2 hover:bg-gray-100">Programmation</a>
+            </div>
+          </div>
+
+          <a href="produits.html" class="text-white hover:text-blue-200" data-content="navText">Produits</a>
+          <a href="prestations.html" class="text-white hover:text-blue-200" data-content="navText">Prestations</a>
+          <a href="ressources.html" class="text-white hover:text-blue-200" data-content="navText">Ressources</a>
+          <a href="actualites.html" class="text-white hover:text-blue-200" data-content="navText">Actualités</a>
+          <a href="/equipe" class="text-white hover:text-blue-200" data-content="navText">Équipe</a>
+        </div>
+      </div>
+
+      <!-- Right: language -->
+      <div class="flex-shrink-0">
+        <a href="/en" class="text-white hover:text-blue-200 flex items-center" data-content="navText">
+          <span class="icon-globe mr-2"></span> Français
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero section -->
+  <header id="hero">
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="max-w-5xl pl-8 flex">
+      <div class="ml-6 lg:ml-0 text-white space-y-6 z-10 hero-content" style="margin-left: 2rem;">
+        <h1 data-content="hero.title" class="text-3xl md:text-4xl lg:text-5xl leading-tight mb-4"></h1>
+        <div class="flex gap-12">
+          <a data-content-link="hero.link1" href="/contact" class="py-1 border-b inline-flex items-center gap-2 group text-white">
+            <span data-content="hero.link1.text" class="leading-none text-sm font-light"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right-icon lucide-arrow-up-right transform transition-transform duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:scale-110">
+              <path d="M7 7h10v10"/>
+              <path d="M7 17 17 7"/>
+            </svg>
+          </a>
+          <a data-content-link="hero.link2" href="/services" class="py-1 border-b inline-flex items-center gap-2 group text-white">
+            <span data-content="hero.link2.text" class="leading-none text-sm font-light"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right-icon lucide-arrow-up-right transform transition-transform duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:scale-110">
+              <path d="M7 7h10v10"/>
+              <path d="M7 17 17 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Partners section (rendered by script.js) -->
+  <section id="partners" class="bg-white py-8" aria-label="Partners">
+    <div class="">
+      <h2 class="text-2xl font-semibold text-[#283242] partners-title px-6">Nous tenons à remercier tous ceux qui nous ont accordé leur confiance</h2>
+
+      <div class="partner-marquee my-8" aria-hidden="false">
+        <div class="marquee" aria-hidden="false">
+          <div class="marquee__group" data-content="partners"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Expertise (will be filled by script.js) -->
+  <section id="expertise" class="bg-gray-100 py-16">
+    <h2 class="text-3xl max-w-5xl font-semibold text-center text-[#283242] mb-8 mx-auto">Nous vous proposons notre expérience tout au long du processus d'innovation: de la conception à la publication</h2>
+    <div class="flex my-16 mx-auto items-center justify-center gap-8 max-w-6xl px-6" data-content="expertise">
+      <!-- cards injected here -->
+    </div>
+  </section>
+
+  <!-- Services (will be filled by script.js) -->
+  <section id="services" class="py-16 mx-auto px-6">
+    <h2 class="text-3xl font-semibold text-center text-[#283242] mb-8 mx-auto" data-content="services.title">Découvrez nos services</h2>
+    <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12" data-content="services.description"> </p>
+    <div class="flex my-16 mx-auto items-center justify-center gap-8 px-6 max-w-6xl" data-content="services.cards">
+      <!-- service cards injected here -->
+    </div>
+  </section>
+
+  <!--
+  <section id="news" class="bg-gray-100 py-16">
+    <div class="flex justify-between items-center px-6 mb-4">
+      <h2 class="text-2xl font-semibold text-[#283242] px-6">Actualités</h2>
+      <div class="flex justify-center items-center px-6">
+        <button id="carouselPrev" class="px-4 py-2 text-[#09AFFF] rounded transition-colors duration-200 ease-out" aria-label="Précédent" disabled>
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button id="carouselNext" class="ml-3 px-4 py-2 text-[#09AFFF] rounded transition-colors duration-200 ease-out" aria-label="Suivant">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="article-carousel" class="flex gap-8 overflow-hidden" data-content="news"></div>
+
+    <div class="text-center mt-8">
+      <a href="actualites.html" class="text-[#09AFFF] font-medium inline-flex items-center gap-2 hover:text-blue-400">
+        Voir toutes les actualités
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+  -->
+
+  <!-- News / Articles carousel -->
+  <section id="news-alt" class="bg-[#283242] py-16">
+    <div class="flex justify-between items-center px-6 mb-8">
+      <h2 class="text-2xl font-semibold text-white px-6">Actualités</h2>
+      <div class="flex justify-center items-center px-6">
+        <!-- article carousel uses these IDs (kept for existing JS) -->
+        <button id="carouselPrev" class="px-4 py-2 text-[#09AFFF] rounded transition-colors duration-200 ease-out" aria-label="Précédent" disabled>
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button id="carouselNext" class="ml-3 px-4 py-2 text-[#09AFFF] rounded transition-colors duration-200 ease-out" aria-label="Suivant">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="article-carousel" class="flex overflow-hidden pl-12">
+
+      <!-- GDR NeuralNet 2025 -->
+      <a class="bg-[#39475E] rounded-lg p-2 w-72 hover:bg-[#4A5A73] transition-colors duration-200 ease-out flex-shrink-0" href="https://aquineuro.eu/gdr-neuralnet-2025.html" target="_blank">
+        <img src="https://aquineuro.eu/wp-content/uploads/2025/11/logo_banner2.jpg" alt="GDR NeuralNet 2025" class="rounded-t-lg w-full h-48 object-cover">
+        <div class="my-4">
+          <span class="text-xs text-[#09AFFF]">25 Novembre 2025</span>
+          <h3 class="text-lg font-semibold text-white mb-3">GDR NeuralNet 2025</h3>
+          <p class="text-white text-xs">Nous serons à Bordeaux novembre 26-28 pour le GDR NeuralNet. Rejoignez-nous pour des discussions intéressantes.</p>
+        </div>
+      </a>
+
+      <!-- Conférence EBBS 2025 -->
+      <a class="bg-[#39475E] rounded-lg p-2 w-72 hover:bg-[#4A5A73] transition-colors duration-200 ease-out flex-shrink-0" href="https://aquineuro.eu/conference-ebbs-2025.html" target="_blank">
+        <img src="https://aquineuro.eu/wp-content/uploads/2025/06/bordeaux_c.webp" alt="Conférence EBBS 2025" class="rounded-t-lg w-full h-48 object-cover">
+        <div class="my-4">
+          <span class="text-xs text-[#09AFFF]">18 juin 2025</span>
+          <h3 class="text-lg font-semibold text-white mb-3">Conférence EBBS 2025</h3>
+          <p class="text-white text-xs">Nous serons à Bordeaux du 28 juin au 1er juillet pour la conférence de la European Brain and Behavior Society (EBBS). Nous espérons vous y voir !</p>
+        </div>
+      </a>
+
+      <!-- Soldes d'Été 2025: Photométrie -->
+      <a class="bg-[#39475E] rounded-lg p-2 w-72 hover:bg-[#4A5A73] transition-colors duration-200 ease-out flex-shrink-0" href="https://aquineuro.eu/soldes-ete-2025-photometrie.html" target="_blank">
+        <img src="https://aquineuro.eu/wp-content/uploads/2025/06/ebbs_deal.jpg" alt="Soldes d'Été 2025: Photométrie" class="rounded-t-lg w-full h-48 object-cover">
+        <div class="my-4">
+          <span class="text-xs text-[#09AFFF]">18 juin 2025</span>
+          <h3 class="text-lg font-semibold text-white mb-3">Soldes d'Été 2025: Photométrie</h3>
+          <p class="text-white text-xs">À partir de maintenant et jusqu'au 10 juillet, les systèmes de photométrie à fibre sont réduits de 15% et sont livrés avec un support de fibre gratuit et 2 boîtes de fibres.</p>
+        </div>
+      </a>
+
+      <!-- Conférence NeuroFrance 2023 -->
+      <a class="bg-[#39475E] rounded-lg p-2 w-72 hover:bg-[#4A5A73] transition-colors duration-200 ease-out flex-shrink-0" href="https://aquineuro.eu/conference-neurofrance-2023.html" target="_blank">
+        <img src="https://aquineuro.eu/wp-content/uploads/2023/05/neurofrance-2023.png" alt="Conférence NeuroFrance 2023" class="rounded-t-lg w-full h-48 object-cover">
+        <div class="my-4">
+          <span class="text-xs text-[#09AFFF]">23 mai 2023</span>
+          <h3 class="text-lg font-semibold text-white mb-3">Conférence NeuroFrance 2023</h3>
+          <p class="text-white text-xs">Bonjour à tous, nous serons à Lyon pour Neurofrance. Nous espérons vous y voir !</p>
+        </div>
+      </a>
+
+      <!-- Le transfert calcique astroglial ER-mitochondrie médiateur de l'intégration synaptique endocannabinoïde dépendante. -->
+      <a class="bg-[#39475E] rounded-lg p-2 w-72 hover:bg-[#4A5A73] transition-colors duration-200 ease-out flex-shrink-0" href="https://aquineuro.eu/le-transfert-calcique-astroglial-er-mitochondrie-mediateur-de-lintegration-synaptique-endocannabinoide-dependante.html" target="_blank">
+        <img src="https://aquineuro.eu/wp-content/uploads/2022/04/capture-1.png" alt="Le transfert calcique astroglial ER-mitochondrie médiateur de l'intégration synaptique endocannabinoïde dépendante." class="rounded-t-lg w-full h-48 object-cover">
+        <div class="my-4">
+          <span class="text-xs text-[#09AFFF]">23 mai 2023</span>
+          <h3 class="text-lg font-semibold text-white mb-3" style="display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden;">
+            Le transfert calcique astroglial ER-mitochondrie médiateur de l'intégration synaptique endocannabinoïde dépendante.
+          </h3>
+          <p class="text-white text-xs">Nous avons contribué à l'étude de Serrat et al. (Cell Reports, 2021) révélant un lien endocannabinoïde entre les MERC astrogliales et la régulation des fonctions du réseau cérébral.</p>
+        </div>
+      </a>
+
+      <!-- Codage dynamique de la population préfrontale pendant les comportements défensifs. -->
+      <a class="bg-[#39475E] rounded-lg p-2 w-72 hover:bg-[#4A5A73] transition-colors duration-200 ease-out flex-shrink-0" href="https://aquineuro.eu/codage-dynamique-de-la-population-prefrontale-pendant-les-comportements-defensifs.html" target="_blank">
+        <img src="https://aquineuro.eu/wp-content/uploads/2022/04/thumbmail.png" alt="Le transfert calcique astroglial ER-mitochondrie médiateur de l'intégration synaptique endocannabinoïde dépendante." class="rounded-t-lg w-full h-48 object-cover">
+        <div class="my-4">
+          <span class="text-xs text-[#09AFFF]">23 mai 2023</span>
+          <h3 class="text-lg font-semibold text-white mb-3" style="display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden;">
+            Codage dynamique de la population préfrontale pendant les comportements défensifs.
+          </h3>
+          <p class="text-white text-xs">Nous avons contribué à l'étude de Jercog et al. (Nature, 2021) montrant que la sélection adaptative des réponses défensives qui repose sur un processus dynamique d'information reliant les menaces aux actions défensives, se déroulant dans les réseaux préfrontaux.</p>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="actualites.html" class="text-[#09AFFF] font-medium inline-flex items-center gap-2 hover:text-blue-400">
+        Voir toutes les actualités
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
+  <!--
+  <section id="contact" class="bg-[#283242] py-16 px-6">
+    <h2 class="text-2xl font-semibold text-white px-6 mb-12">Pour en savoir plus, écrivez-nous !</h2>
+    <div class="flex items-center">
+      <form action="/contact" method="POST" class="max-w-2xl space-y-12 ml-6 flex-1">
+        <div class="flex gap-4">
+          <input type="text" id="name" name="name" placeholder="Nom complet" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out">
+          <input type="email" id="email" name="email" placeholder="Email" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out">
+        </div>
+        <div>
+          <textarea id="message" name="message" placeholder="Message" rows="1" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out"></textarea>
+        </div>
+        <div>
+          <label class="inline-flex items-center text-white">
+            <input type="checkbox" name="subscribe" class="form-checkbox h-4 w-4 text-blue-600 bg-[#283242] border-gray-300 focus:ring-blue-500">
+            <span class="ml-2 text-sm">J'accepte la <a href="/politique-de-confidentialité" class="text-[#09AFFF] underline">politique de confidentialité</a> d'AquiNeuro.</span>
+          </label>
+        </div>
+        <button type="submit" class="bg-[#09AFFF] text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-200 ease-out">
+          Envoyer
+          <i class="fa-solid fa-paper-plane ml-2"></i>
+        </button>
+      </form>
+      <i class="fa-solid fa-comments text-9xl mx-auto mb-6 text-[#6B87B3]"></i>
+    </div>
+  </section>
+  -->
+
+  <!-- Products carousel (buttons scoped to the section via aria-labels; no duplicate IDs) -->
+  <section id="suggested-products" class="py-16 px-6">
+    <div class="flex justify-between items-center px-6 mb-4">
+      <h2 class="text-2xl font-semibold text-[#283242] px-6">Les produits suivants ont tous été testés et approuvés par Aquineuro :</h2>
+      <div class="flex justify-center items-center px-6">
+        <!-- product carousel uses buttons found by aria-label inside the same section -->
+        <button class="px-4 py-2 text-[#EB3F4D] rounded transition-colors duration-200 ease-out" aria-label="Précédent" disabled>
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="ml-3 px-4 py-2 text-[#EB3F4D] rounded transition-colors duration-200 ease-out" aria-label="Suivant">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="product-carousel" class="flex gap-8 overflow-hidden" data-content="products"></div>
+
+    <div class="text-center mt-8">
+      <a href="produits.html" class="text-[#EB3F4D] font-medium inline-flex items-center gap-2 hover:text-red-400">
+        Voir tout les produits
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
+  <footer class="bg-[#283242] text-white py-8 px-6">
+    <div class="mx-auto flex-col justify-between items-center">
+      <img src="https://aquineuro.eu/wp-content/themes/aquineuro/img/logo.svg" alt="AquiNeuro Logo" class="h-12 mb-4">
+      <div class="flex justify-between items-center w-full md:w-auto space-y-4 md:space-y-0 md:space-x-6">
+        <p class="text-sm mb-4 md:mb-0">&copy; 2026 AquiNeuro. Tous droits réservés.</p>
+        <div class="flex space-x-6 items-end">
+          <a href="/mentions-legales" class="text-sm hover:text-gray-400 transition-colors duration-200 ease-out">Mentions légales</a>
+          <a href="/politique-de-confidentialité" class="text-sm hover:text-gray-400 transition-colors duration-200 ease-out">Politique de confidentialité</a>
+          <a href="/conditions-generales-vente" class="text-sm hover:text-gray-400 transition-colors duration-200 ease-out">CGV</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating contact toggle + popup -->
+  <button id="contactToggle" class="contact-toggle" aria-label="Contact" aria-expanded="false" type="button">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <!-- speech bubble (fixed path) -->
+      <g class="icon-bubble" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </g>
+      <!-- down chevron -->
+      <g class="icon-chevron" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9l6 6 6-6" />
+      </g>
+    </svg>
+  </button>
+
+  <!-- Contact popup -->
+  <aside id="contactPopup" class="contact-popup" aria-hidden="true" role="dialog" aria-label="Contact form">
+    <button id="contactClose" class="contact-close hover:text-[#09AFFF] transition-colors duration-300 ease-out" aria-label="Fermer">&times;</button>
+    <h3 class="text-xl mb-12">Contactez-nous</h3>
+    <form action="/contact" method="POST" class="max-w-2xl">
+      <div class="flex gap-4">
+        <input type="text" id="name" name="name" placeholder="Nom complet" required class="mb-4 text-xs w-full px-4 py-2 border-b border-gray-300 bg-white focus:outline-none focus:bg-gray-50 text-[#283242] transition-colors duration-300 ease-out">
+        <input type="email" id="email" name="email" placeholder="Email" required class="mb-4 text-xs w-full px-4 py-2 border-b border-gray-300 bg-white focus:outline-none focus:bg-gray-50 text-[#283242] transition-colors duration-300 ease-out">
+      </div>
+      <div>
+        <textarea id="message" name="message" placeholder="Message" rows="1" required class="mb-4 text-xs w-full px-4 py-2 border-b border-gray-300 bg-white focus:outline-none focus:bg-gray-50 text-[#283242] transition-colors duration-300 ease-out"></textarea>
+      </div>
+      <div class="w-full">
+        <label class="flex justify-start items-center text-[#283242]">
+          <input type="checkbox" name="subscribe" class="form-checkbox text-blue-600 w-4 h-4 bg-[#283242] border-gray-300 focus:ring-blue-500">
+          <span class="text-xs ml-2">J'accepte la <a href="/politique-de-confidentialité" class="text-[#09AFFF] underline">politique de confidentialité</a> d'AquiNeuro.</span>
+        </label>
+      </div>
+      <button type="submit" class="bg-[#09AFFF] text-xs text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-200 ease-out mt-12">
+        Envoyer
+        <i class="fa-solid fa-paper-plane ml-2"></i>
+      </button>
+    </form>
+  </aside>
+
+  <!-- load dynamic renderer first -->
+  <script src="script.js"></script>
+
+  <!-- inline behavior (carousels, nav dropdown) -->
+  <script>
+    (function () {
+      // dropdown logic (existing)
+      const btn = document.getElementById('formationsBtn');
+      const dropdown = document.getElementById('formationsDropdown');
+
+      document.addEventListener('click', (e) => {
+        if (btn.contains(e.target)) {
+          const isOpen = !dropdown.classList.contains('hidden');
+          dropdown.classList.toggle('hidden');
+          btn.setAttribute('aria-expanded', String(!isOpen));
+        } else if (!dropdown.contains(e.target)) {
+          dropdown.classList.add('hidden');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // navbar scroll direction logic (existing)
+      const nav = document.getElementById('siteNav');
+      let lastY = window.scrollY;
+
+      window.addEventListener('scroll', () => {
+        const currentY = window.scrollY;
+        const scrollingUp = currentY < lastY;
+        lastY = currentY;
+
+        if (scrollingUp && currentY > 10) {
+          nav.classList.add('nav-solid');
+        } else {
+          nav.classList.remove('nav-solid');
+        }
+      }, { passive: true });
+
+      // ---- article carousel controller (existing) ----
+      const initArticleCarousel = () => {
+        const viewport = document.getElementById('article-carousel');
+        if (!viewport) return;
+
+        // if already wrapped, skip
+        if (viewport.querySelector('.carousel-track')) {
+          setupCarouselControls(viewport, viewport.querySelector('.carousel-track'));
+          return;
+        }
+
+        // wrap children into track
+        const track = document.createElement('div');
+        track.className = 'carousel-track';
+        // move all direct children (cards) into track
+        while (viewport.firstChild) {
+          track.appendChild(viewport.firstChild);
+        }
+        viewport.appendChild(track);
+
+        setupCarouselControls(viewport, track);
+      };
+
+      function setupCarouselControls(viewport, track) {
+        const prevBtn = document.getElementById('carouselPrev');
+        const nextBtn = document.getElementById('carouselNext');
+        if (!prevBtn || !nextBtn) return;
+
+        let currentIndex = 0;
+        let itemWidth = 0;
+        let gap = 0;
+        let maxIndex = 0;
+
+        const recalc = () => {
+          const first = track.children[0];
+          if (!first) return;
+          // prevent wrapping for consistent measurements
+          track.style.flexWrap = 'nowrap';
+          // compute gap robustly using bounding rects
+          let measuredGap = 0;
+          if (track.children.length > 1) {
+            const r1 = first.getBoundingClientRect();
+            const r2 = track.children[1].getBoundingClientRect();
+            measuredGap = Math.max(0, r2.left - (r1.left + r1.width));
+          }
+          gap = measuredGap;
+          itemWidth = Math.round(first.getBoundingClientRect().width + gap);
+          // ensure track width matches content
+          track.style.width = `${track.scrollWidth}px`;
+          const visibleCount = Math.max(1, Math.floor(viewport.clientWidth / itemWidth));
+          maxIndex = Math.max(0, track.children.length - visibleCount);
+          currentIndex = Math.min(currentIndex, maxIndex);
+          update();
+        };
+
+        const update = () => {
+          const x = -Math.round(currentIndex * itemWidth);
+          track.style.transform = `translateX(${x}px)`;
+          prevBtn.disabled = currentIndex <= 0;
+          nextBtn.disabled = currentIndex >= maxIndex;
+        };
+
+        prevBtn.addEventListener('click', () => {
+          currentIndex = Math.max(0, currentIndex - 1);
+          update();
+        });
+
+        nextBtn.addEventListener('click', () => {
+          currentIndex = Math.min(maxIndex, currentIndex + 1);
+          update();
+        });
+
+        // handle window resize
+        let resizeTimer = null;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(recalc, 120);
+        });
+
+        // initial calculate after next paint (images may affect sizes)
+        requestAnimationFrame(() => {
+          // wait for images to load if any
+          const imgs = track.querySelectorAll('img');
+          if (imgs.length === 0) { recalc(); return; }
+          let remaining = imgs.length;
+          imgs.forEach(img => {
+            if (img.complete) {
+              remaining--;
+            } else {
+              img.addEventListener('load', () => {
+                remaining--;
+                if (remaining === 0) recalc();
+              }, { once: true });
+              img.addEventListener('error', () => {
+                remaining--;
+                if (remaining === 0) recalc();
+              }, { once: true });
+            }
+          });
+          if (remaining === 0) recalc();
+        });
+      }
+
+      // ---- product carousel controller (new, same behaviour but scoped to product section) ----
+      const initProductCarousel = () => {
+        const viewport = document.getElementById('product-carousel');
+        if (!viewport) return;
+
+        // if already wrapped, skip
+        if (viewport.querySelector('.carousel-track')) {
+          setupProductControls(viewport, viewport.querySelector('.carousel-track'));
+          return;
+        }
+
+        // wrap children into track
+        const track = document.createElement('div');
+        track.className = 'carousel-track';
+        while (viewport.firstChild) {
+          track.appendChild(viewport.firstChild);
+        }
+        viewport.appendChild(track);
+
+        setupProductControls(viewport, track);
+      };
+
+      function setupProductControls(viewport, track) {
+        // find the prev/next buttons inside the same section to avoid ID collisions
+        const section = viewport.closest('section');
+        const prevBtn = section ? section.querySelector('button[aria-label="Précédent"]') : null;
+        const nextBtn = section ? section.querySelector('button[aria-label="Suivant"]') : null;
+        if (!prevBtn || !nextBtn) return;
+
+        let currentIndex = 0;
+        let itemWidth = 0;
+        let gap = 0;
+        let maxIndex = 0;
+
+        const recalc = () => {
+          const first = track.children[0];
+          if (!first) return;
+          // prevent wrapping for consistent measurements
+          track.style.flexWrap = 'nowrap';
+          // compute gap robustly using bounding rects
+          let measuredGap = 0;
+          if (track.children.length > 1) {
+            const r1 = first.getBoundingClientRect();
+            const r2 = track.children[1].getBoundingClientRect();
+            measuredGap = Math.max(0, r2.left - (r1.left + r1.width));
+          }
+          gap = measuredGap;
+          itemWidth = Math.round(first.getBoundingClientRect().width + gap);
+          // ensure track width matches content
+          track.style.width = `${track.scrollWidth}px`;
+          const visibleCount = Math.max(1, Math.floor(viewport.clientWidth / itemWidth));
+          maxIndex = Math.max(0, track.children.length - visibleCount);
+          currentIndex = Math.min(currentIndex, maxIndex);
+          update();
+        };
+
+        const update = () => {
+          const x = -Math.round(currentIndex * itemWidth);
+          track.style.transform = `translateX(${x}px)`;
+          prevBtn.disabled = currentIndex <= 0;
+          nextBtn.disabled = currentIndex >= maxIndex;
+        };
+
+        prevBtn.addEventListener('click', () => {
+          currentIndex = Math.max(0, currentIndex - 1);
+          update();
+        });
+
+        nextBtn.addEventListener('click', () => {
+          currentIndex = Math.min(maxIndex, currentIndex + 1);
+          update();
+        });
+
+        let resizeTimer = null;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(recalc, 120);
+        });
+
+        requestAnimationFrame(() => {
+          const imgs = track.querySelectorAll('img');
+          if (imgs.length === 0) { recalc(); return; }
+          let remaining = imgs.length;
+          imgs.forEach(img => {
+            if (img.complete) {
+              remaining--;
+            } else {
+              img.addEventListener('load', () => {
+                remaining--;
+                if (remaining === 0) recalc();
+              }, { once: true });
+              img.addEventListener('error', () => {
+                remaining--;
+                if (remaining === 0) recalc();
+              }, { once: true });
+            }
+          });
+          if (remaining === 0) recalc();
+        });
+      }
+
+      // init on DOM ready
+      document.addEventListener('DOMContentLoaded', () => {
+        initArticleCarousel();
+        initProductCarousel();
+      });
+      // also init in case this runs after DOMContentLoaded
+      initArticleCarousel();
+      initProductCarousel();
+    })();
+
+    (function () {
+      const toggle = document.getElementById('contactToggle');
+      const popup = document.getElementById('contactPopup');
+      const closeBtn = document.getElementById('contactClose');
+      const firstField = document.querySelector('#contactPopupForm input, #contactPopupForm textarea');
+
+      if (!toggle || !popup) return;
+
+      function openPopup() {
+        toggle.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        popup.classList.add('open');
+        popup.setAttribute('aria-hidden', 'false');
+        // focus first input
+        if (firstField) setTimeout(() => firstField.focus(), 220);
+      }
+
+      function closePopup() {
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        popup.classList.remove('open');
+        popup.setAttribute('aria-hidden', 'true');
+        toggle.focus();
+      }
+
+      toggle.addEventListener('click', (e) => {
+        const open = popup.classList.contains('open');
+        if (open) closePopup(); else openPopup();
+      });
+
+      closeBtn.addEventListener('click', closePopup);
+
+      // click outside to close
+      document.addEventListener('click', (e) => {
+        if (!popup.classList.contains('open')) return;
+        if (popup.contains(e.target) || toggle.contains(e.target)) return;
+        closePopup();
+      });
+
+      // Esc to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && popup.classList.contains('open')) closePopup();
+      });
+    })();
+  </script>
+</body>
+</html>

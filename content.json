@@ -1,0 +1,235 @@
+{
+  "hero": {
+    "title": "Vos appareils, logiciels, et formations pour neuroscience sur mesure",
+    "backgroundImage": "https://aquineuro.eu/wp-content/uploads/2025/12/banner_pascal_1-2000x868.jpg",
+    "link1": {
+      "url": "/contact",
+      "text": "Prendre contact"
+    },
+    "link2": {
+      "url": "/services",
+      "text": "Nos services"
+    }
+  },
+  "partners": [
+    {
+      "name": "Achucarro",
+      "logo": "assets/partners/achucarro.png",
+      "url": "https://www.achucarro.org/"
+    },
+    {
+      "name": "Unité de Biologie Fonctionnelle et Adaptative",
+      "logo": "assets/partners/BFA_logo.png",
+      "url": "https://bfa.u-pariscite.fr/"
+    },
+    {
+      "name": "Neurocampus IINS",
+      "logo": "assets/partners/Bx_Neurocampus_IINS01_RVB-520px-360x324.jpg.webp",
+      "url": "https://www.iins.u-bordeaux.fr/en/"
+    },
+    {
+      "name": "Neurocampus IMN",
+      "logo": "assets/partners/Bx_Neurocampus_IMN01_RVB-520px.jpg.webp",
+      "url": "https://www.imn-bordeaux.org/"
+    },
+    {
+      "name": "Neurocampus INCIA",
+      "logo": "assets/partners/Bx_Neurocampus_INCIA01_RVB-520px.jpg.webp",
+      "url": "https://incia.u-bordeaux.fr"
+    },
+    {
+      "name": "Neurocampus Magendie",
+      "logo": "assets/partners/Bx_Neurocampus_Magendie01_RVB-520px.jpg.webp",
+      "url": "https://www.bordeaux-neurocampus.fr/qui-sommes-nous/les-6-unites-de-recherche/neurocentre-magendie/"
+    },
+    {
+      "name": "Cajal Institute",
+      "logo": "assets/partners/Cajal-logo.png",
+      "url": "https://www.cajal.csic.es/"
+    },
+    {
+      "name": "Institute of Molecular and Cell Biology",
+      "logo": "assets/partners/ifm.png",
+      "url": "https://ibmc.cnrs.fr/"
+    },
+    {
+      "name": "Italian Institute of Technology",
+      "logo": "assets/partners/iit.png",
+      "url": "https://www.iit.it/"
+    },
+    {
+      "name": "Institute of Mediterranean Neurobiology",
+      "logo": "assets/partners/inmed.png",
+      "url": "https://www.inmed.fr/en/"
+    },
+    {
+      "name": "Institute of Molecular Pharmacology and Cell Biology",
+      "logo": "assets/partners/ipmc.jpg",
+      "url": "https://www.ipmc.cnrs.fr/en/"
+    },
+    {
+      "name": "National Laboratory for Energy and Geology",
+      "logo": "assets/partners/lnec.png",
+      "url": "https://www.lnec.pt/"
+    },
+    {
+      "name": "École Normale Supérieure PSL",
+      "logo": "assets/partners/logo_ens_psl_en_png.png",
+      "url": "https://www.ens.psl.eu/en"
+    },
+    {
+      "name": "University of Lausanne",
+      "logo": "assets/partners/Logo_Université_de_Lausanne.svg.png",
+      "url": "https://www.unil.ch/unil/fr/home.html"
+    },
+    {
+      "name": "Institut de Génomique Fonctionelle",
+      "logo": "assets/partners/logo-IGF.webp",
+      "url": "https://www.igf.cnrs.fr/"
+    },
+    {
+      "name": "Hospital del mar Medical Research Institute",
+      "logo": "assets/partners/Logo-IMIM.jpg",
+      "url": "https://www.imim.cat/en_index.html"
+    },
+    {
+      "name": "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement",
+      "logo": "assets/partners/Logo-INRAE_Transparent.svg",
+      "url": "https://www.inrae.fr/"
+    },
+    {
+      "name": "Centre de Recherche sur la Cognition Animale",
+      "logo": "assets/partners/LogoCRCA_PFT.png",
+      "url": "https://cbi-cognition.cnrs.fr/en/home/"
+    },
+    {
+      "name": "Institut des Neurosciences Paris-Saclay",
+      "logo": "assets/partners/Neuro-PSI.jpg",
+      "url": "https://www.neuropsi.fr/"
+    },
+    {
+      "name": "University of Texas at El Paso",
+      "logo": "assets/partners/utep.png",
+      "url": "https://www.utep.edu/"
+    },
+    {
+      "name": "Vanderbilt University",
+      "logo": "assets/partners/Vanderbilt_University_logo.svg",
+      "url": "https://www.vanderbilt.edu/"
+    }
+  ],
+  "expertise": [
+    {
+      "icon": "fa-solid fa-ruler",
+      "description": "Appareils, logiciels, et formations pour neuroscience sur mesure"
+    },
+    {
+      "icon": "fa-solid fa-flask",
+      "description": "Spécialisé en électrophysiologie, optogénétique, et photométrique"
+    },
+    {     
+      "icon": "fa-brands fa-python",
+      "description": "Logiciels et analyses écrit sur commande en Python"
+    }
+  ],
+  "services": {
+    "title": "Découvrez nos services",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "cards": [
+      {
+        "title": "Formations",
+        "image": "https://aquineuro.eu/wp-content/uploads/2022/04/img_0977.jpg",
+        "icon": "fa-solid fa-graduation-cap",
+        "description": "Aquineuro propose plusieurs niveaux de formation dans les domaines clefs de la neurophysiologie.",
+        "href": "/formations"
+      },
+      {
+        "title": "Logiciels",
+        "image": "https://aquineuro.eu/wp-content/uploads/2021/05/solutions-div.jpg",
+        "icon": "fa-solid fa-laptop-code",
+        "description": "Aquineuro propose le développement de logiciels sur mesure vous permettant de piloter vos expériences, de gérer et d'analyser vos données expérimentales.",
+        "href": "/logiciels"
+      },
+      {
+        "title": "Prestations",
+        "image": "https://aquineuro.eu/wp-content/uploads/2021/05/solutions-videotracking-800x555.jpg",
+        "icon": "fa-solid fa-handshake",
+        "description": "Aquineuro propose un accompagnement lors des premières études.",
+        "href": "/prestations"
+      }
+    ]
+  },
+
+  "products": [
+    {
+      "name": "SuperBond",
+      "description": "Highly adhesive dental cement",
+      "image": "https://aquineuro.eu/wp-content/uploads/2022/03/coffret.jpg",
+      "categories": ["Electrophysiology", "Optogenetics", "Photometry"],
+      "link": "/produits/superbond"
+    },
+    {
+      "name": "Electrophysiology Recording System",
+      "description": "256 Channels electrophysiology recording system",
+      "image": "https://aquineuro.eu/wp-content/uploads/2022/01/acquisition-board-2-with-grid.png-2_1.jpg",
+      "categories": ["Electrophysiology"],
+      "link": "/produits/electrophysiology-recording-system"
+    },
+    {
+      "name": "Cambridge Neurotech Silicon Probes",
+      "description": "Silicon probes in a variety of designs",
+      "image": "https://aquineuro.eu/wp-content/uploads/2022/03/cambridgeneurotech.png",
+      "categories": ["Electrophysiology"],
+      "link": "/produits/cambridge-neurotech-silicon-probes"
+    },
+    {
+      "name": "Omnetics connectors",
+      "description": "These dual row connectors for freely moving electrophysiology",
+      "image": "https://aquineuro.eu/wp-content/uploads/2022/01/a79042-001-1600x1067.png",
+      "categories": ["Electrophysiology"],
+      "link": "/produits/omnectis-connectors"
+    },
+    {
+      "name": "Training course",
+      "description": "Intended for laboratories and research teams, specializing in neuroscience",
+      "image": "https://aquineuro.eu/wp-content/uploads/2022/04/img_0977.jpg",
+      "categories": ["Electrophysiology"],
+      "link": "/produits/training-course"
+    },
+    {
+      "name": "Behavior Camera",
+      "description": "Industrial camera suited for behavioral monitoring",
+      "image": "https://aquineuro.eu/wp-content/uploads/2022/03/camera_demo.png",
+      "categories": ["Camera"],
+      "link": "/produits/behavior-camera"
+    },
+    {
+      "name": "Fiber Photometry Recording System",
+      "description": "Multichannel Fiber Photometry System",
+      "image": "https://aquineuro.eu/wp-content/uploads/2021/12/r810-fiber-photometry-fig2.jpg",
+      "categories": ["Photometry"],
+      "link": "/produits/fiber-photometry-recording-system"
+    },
+    {
+      "name": "Nude ferrules",
+      "description": "Used to make your own implantable optic fibers.",
+      "image": "https://aquineuro.eu/wp-content/uploads/2022/01/img_1003-rotated.jpg",
+      "categories": ["Photometry", "Optogenetics"],
+      "link": "/produits/nude-ferrules"
+    },
+    {
+      "name": "Optic fibers",
+      "description": "Implantable optic fiber (20 packs)",
+      "image": "https://aquineuro.eu/wp-content/uploads/2021/08/fiber-optic-cannulae-with-ceramic-ferrule-02.jpg",
+      "categories": ["Optogenetics", "Photometry"],
+      "link": "/produits/optic-fibers"
+    },
+    {
+      "name": "Rotary Joint (1 optic channel)",
+      "description": "Pigtailed 1x1 Fiber-optic Rotary Joint",
+      "image": "https://aquineuro.eu/wp-content/uploads/2022/03/pigtail-rotary-joint.png",
+      "categories": ["Optogenetics"],
+      "link": "/produits/rotary-joint-1-optic-channel"
+    }
+  ]
+}

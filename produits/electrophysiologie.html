@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Produits Électrophysiologie - AquiNeuro</title>
+
+  <!-- Tailwind CDN (dev only) -->
+  <script>
+    /* Tailwind CDN: inject custom theme colors before loading the runtime */
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = window.tailwind.config || {};
+    window.tailwind.config.theme = window.tailwind.config.theme || {};
+    window.tailwind.config.theme.extend = Object.assign({}, window.tailwind.config.theme.extend, {
+      colors: {
+        'aquineuro-dark': '#283242',
+        'aquineuro-blue': '#09AFFF',
+        'aquineuro-red': '#EB3F4D'
+      }
+    });
+  </script>
+  <script src="https://kit.fontawesome.com/746bd61ea5.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
+  <!-- Fontshare: Satoshi -->
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi:400,600,700&display=swap">
+  <!-- Font: Figtree (Google Fonts) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+  <!-- Phosphor Icons -->
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+  />
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+  />
+  <!-- Material Symbols Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=pest_control_rodent" />
+
+  <style>
+    /* use Figtree as main font */
+    body {
+      padding-top: 0; /* allow nav to overlay the hero */
+      font-family: 'Figtree', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    }
+
+    /* Navbar gradient and solid states */
+    .nav-white {
+      background-color: white !important;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      color: #283242 !important;
+    }
+
+    /* Arrow slide-in: hide arrow by default and slide in on hover/focus */
+    .product-card {
+      position: relative;
+      overflow: hidden; /* keep sliding arrow clipped */
+    }
+    .product-card .fa-circle-arrow-right {
+      display: inline-block;
+      transform: translateX(10px); /* start slightly right (off-screen) */
+      opacity: 0;
+      transition: transform 220ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease;
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+    /* show on hover or keyboard focus */
+    .product-card:hover .fa-circle-arrow-right,
+    .product-card:focus-within .fa-circle-arrow-right {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    /* Floating toggle */
+    .contact-toggle {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 9999px;
+      background: #09AFFF; /* aquineuro-blue */
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(2,10,35,0.18);
+      z-index: 60;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+    .contact-toggle:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(2,10,35,0.2); }
+  
+  /* Popup */
+    .contact-popup {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      width: 380px;
+      max-width: calc(100% - 2rem);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 18px 50px rgba(10,20,40,0.28);
+      padding: 1rem;
+      z-index: 70;
+      opacity: 0;
+      transform: translateY(12px) scale(.98);
+      visibility: hidden;
+      transition: opacity 240ms ease, transform 240ms cubic-bezier(.2,.9,.2,1), visibility 240ms;
+      font-family: inherit;
+    }
+    .contact-popup.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      visibility: visible;
+    }
+
+    .contact-popup .contact-close {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    /* svg "morph" (fade+translate) */
+    .contact-toggle svg { width: 22px; height: 22px; display: block; }
+    .contact-toggle .icon-bubble,
+    .contact-toggle .icon-chevron {
+      transition: opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1);
+      transform-origin: center;
+      pointer-events: none;
+    }
+    .contact-toggle .icon-bubble { opacity: 1; transform: translateY(0) scale(1); }
+    .contact-toggle .icon-chevron { opacity: 0; transform: translateY(-6px) scale(.95); }
+    .contact-toggle.open .icon-bubble { opacity: 0; transform: translateY(-8px) scale(.92); }
+    .contact-toggle.open .icon-chevron { opacity: 1; transform: translateY(0) scale(1); }
+  </style>
+</head>
+
+<body class="min-h-screen text-[#283242]">
+  <nav class="nav-white z-100 border-b">
+    <div class="mx-auto px-6 py-4 flex items-center justify-between">
+      <!-- Left: logo -->
+      <div class="flex-shrink-0">
+        <a href="index.html" class="flex items-center" data-content="navLink">
+          <img src="https://aquineuro.eu/wp-content/themes/aquineuro/img/logo-color.svg" alt="Logo" class="w-24 mr-2" data-content="navImage" />
+        </a>
+      </div>
+
+      <!-- Middle: navigation links (centered block) -->
+      <div class="flex-1 flex justify-center">
+        <div class="inline-flex items-center space-x-4">
+          <div class="relative">
+            <button id="formationsBtn" type="button" aria-expanded="false"
+              class="text-[#283242] hover:text-sky-600 flex items-center space-x-1 focus:outline-none">
+              <span>Formations</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <div id="formationsDropdown" class="hidden absolute left-0 mt-2 max-w-48 bg-white rounded shadow-lg text-gray-800 z-50">
+              <a href="/formations/electrophysiologie.html" class="block px-4 py-2 hover:bg-gray-100">Électrophysiologie</a>
+              <a href="/formations/photometrie.html" class="block px-4 py-2 hover:bg-gray-100">Photométrie</a>
+              <a href="/formations/programmation.html" class="block px-4 py-2 hover:bg-gray-100">Programmation</a>
+            </div>
+          </div>
+
+          <a href="../produits.html" class="text-[#09AFFF] text-underline hover:text-sky-600" data-content="navText">Produits</a>
+          <a href="../prestations.html" class="text-[#283242]  hover:text-sky-600" data-content="navText">Prestations</a>
+          <a href="../ressources.html" class="text-[#283242] hover:text-sky-600" data-content="navText">Ressources</a>
+          <a href="../actualites.html" class="text-[#283242] hover:text-sky-600" data-content="navText">Actualités</a>
+          <a href="/equipe" class="text-[#283242] hover:text-sky-600" data-content="navText">Équipe</a>
+        </div>
+      </div>
+
+      <!-- Right: language -->
+      <div class="flex-shrink-0">
+        <a href="/en" class="text-[#283242] hover:text-sky-600 flex items-center" data-content="navText">
+          <span class="icon-globe mr-2"></span> Français
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="w-full min-h-[90vh] z-0">
+    <div class="flex min-h-[90vh]">
+      <!-- Sidebar -->
+      <aside class="w-64 bg-gray-50 border-r border-gray-200">
+        <h2 class="text-xl font-semibold mb-6 text-[#283242] p-6">Catégories</h2>
+        <nav class="">
+          <a href="../produits.html" class="w-full px-6 py-2 block border-l-4 border-gray-500 text-[#283242] hover:text-sky-600">Tout</a>
+          <a href="comportement.html" class="w-full px-6 py-2 block border-l-4 border-gray-500 text-[#283242] hover:text-sky-600">Comportement</a>
+          <a href="electrophysiologie.html" class="w-full px-6 py-2 block border-l-4 border-[#09AFFF] font-semibold text-[#09AFFF] bg-[#09AFFF14] hover:text-sky-600">Électrophysiologie</a>
+          <a href="optogenetique.html" class="w-full px-6 py-2 block border-l-4 border-gray-500 text-[#283242] hover:text-sky-600">Optogénétique</a>
+          <a href="outils.html" class="w-full px-6 py-2 block border-l-4 border-gray-500 text-[#283242] hover:text-sky-600">Outils</a>
+          <a href="photometrie.html" class="w-full px-6 py-2 block border-l-4 border-gray-500 text-[#283242] hover:text-sky-600">Photométrie</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <section class="w-full bg-white p-6 space-y-8 pb-16">
+
+        <!-- Breadcrumbs -->
+        <div class="max-w-4xl text-sm flex items-center">
+          <a href="../produits.html" class="text-[#09AFFF] hover:text-sky-600 flex items-center" data-content="breadcrumbHome">
+            Produits
+          </a>
+          <span class="text-[#283242] mx-2">></span>
+          <span class="text-gray-500" data-content="breadcrumbCurrent">Électrophysiologie</span>
+        </div>
+        
+        <!-- Header -->
+        <div class="flex w-full justify-between items-center mb-8">
+          <!-- Title -->
+          <div class="max-w-4xl flex items-end gap-2">
+            <h1 class="text-3xl text-[#283242]">Électrophysiologie</h1>
+            <span id="productCount" class="text-gray-600 text-xs mb-1">14</span>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="w-full max-w-sm relative">
+            <input id="productSearch" type="text" aria-label="Recherche produits" placeholder="Rechercher dans “Électrophysiologie”" class="bg-gray-100 w-full pl-12 py-2 rounded-md focus:outline-none focus:ring-1 focus focus:ring-[#09AFFF] transition-colors duration-300 ease-out">
+            <i class="fa-solid fa-magnifying-glass text-[#09AFFF] absolute left-4 top-3"></i>
+          </div>
+        </div>
+
+        <!-- Products Grid -->
+        <section class="grid lg:grid-cols-5 2xl:grid-cols-7 gap-6">
+
+          <!-- Superbond product card -->
+          <a href="/produits/superbond" class="bg-white w-56 h-82 rounded-xl product-card border border-gray-300 hover:border-[#09AFFF] hover:border-2 hover:shadow-lg transition-colors duration-200 ease-out flex flex-col product-card">
+            <img src="https://aquineuro.eu/wp-content/uploads/2022/03/coffret.jpg" alt="SuperBond" class="p-6 max-w-48 max-h-36 mx-auto object-contain">
+            <div class="px-4 product-content flex flex-col justify-between h-full">
+              <div>
+                <h3 class="text-sm font-semibold product-title truncate">SuperBond</h3>
+                <p class="text-gray-400 text-xs mb-4 truncate">Highly adhesive dental cement</p>
+                <div class="flex gap-2">
+                  <span class="text-[0.5rem] rounded bg-gray-100 p-1">Electrophysiology</span><span class="text-[0.5rem] rounded bg-gray-100 p-1">Optogenetics</span><span class="text-[0.5rem] rounded bg-gray-100 p-1">Photometry</span>
+                </div>
+              </div>
+              <div class="flex flex-col justify-between mt-4">
+                <div class="flex-1 text-right py-4 text-[#EB3F4D] h-full flex items-end justify-end">
+                  <i class="fa-solid fa-circle-arrow-right fa-lg" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Electrophysiology Recording System product card -->
+          <a href="/produits/electrophysiology-recording-system" class="bg-white w-56 h-82 rounded-xl product-card border border-gray-300 hover:border-[#09AFFF] hover:border-2 hover:shadow-lg transition-colors duration-200 ease-out flex flex-col product-card">
+            <img src="https://aquineuro.eu/wp-content/uploads/2022/01/acquisition-board-2-with-grid.png-2_1.jpg" alt="Electrophysiology Recording System" class="p-6 max-w-48 max-h-36 mx-auto object-scale-down">
+            <div class="px-4 product-content flex flex-col justify-between h-full">
+              <div>
+                <h3 class="text-sm font-semibold product-title truncate">Electrophysiology Recording System</h3>
+                <p class="text-gray-400 text-xs mb-4 truncate">256 Channels electrophysiology recording system</p>
+                <div class="flex gap-2">
+                  <span class="text-[0.5rem] rounded bg-gray-100 p-1">Electrophysiology</span>
+                </div>
+              </div>
+              <div class="flex flex-col justify-between">
+                <div class="flex-1 text-right py-4 text-[#EB3F4D] h-full flex items-end justify-end">
+                  <i class="fa-solid fa-circle-arrow-right fa-lg" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Cambridge Neurotech Silicon Probes product card -->
+          <a href="/produits/cambridge-neurotech-silicon-probes" class="bg-white w-56 h-82 rounded-xl product-card border border-gray-300 hover:border-[#09AFFF] hover:border-2 hover:shadow-lg transition-colors duration-200 ease-out flex flex-col product-card">
+            <img src="https://aquineuro.eu/wp-content/uploads/2022/03/cambridgeneurotech.png" alt="Cambridge Neurotech Silicon Probes" class="p-6 max-w-48 max-h-36 mx-auto object-contain">
+            <div class="px-4 product-content flex flex-col justify-between h-full">
+              <div>
+                <h3 class="text-sm font-semibold product-title truncate">Cambridge Neurotech Silicon Probes</h3>
+                <p class="text-gray-400 text-xs mb-4 truncate">Silicon probes in a variety of designs</p>
+                <div class="flex gap-2">
+                  <span class="text-[0.5rem] rounded bg-gray-100 p-1">Electrophysiology</span>
+                </div>
+              </div>
+              <div class="flex flex-col justify-between">
+                <div class="flex-1 text-right py-4 text-[#EB3F4D] h-full flex items-end justify-end">
+                  <i class="fa-solid fa-circle-arrow-right fa-lg" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Omnetics connectors product card -->
+          <a href="/produits/omnectis-connectors" class="bg-white w-56 h-82 rounded-xl product-card border border-gray-300 hover:border-[#09AFFF] hover:border-2 hover:shadow-lg transition-colors duration-200 ease-out flex flex-col product-card">
+            <img src="https://aquineuro.eu/wp-content/uploads/2022/01/a79042-001-1600x1067.png" alt="Omnetics connectors" class="p-6 max-w-48 max-h-36 mx-auto object-contain">
+            <div class="px-4 product-content flex flex-col justify-between h-full">
+              <div>
+                <h3 class="text-sm font-semibold product-title truncate">Omnetics connectors</h3>
+                <p class="text-gray-400 text-xs mb-4 truncate">These dual row connectors for freely moving electrophysiology</p>
+                <div class="flex gap-2">
+                  <span class="text-[0.5rem] rounded bg-gray-100 p-1">Electrophysiology</span>
+                </div>
+              </div>
+              <div class="flex flex-col justify-between">
+                <div class="flex-1 text-right py-4 text-[#EB3F4D] h-full flex items-end justify-end">
+                  <i class="fa-solid fa-circle-arrow-right fa-lg" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Training course product card -->
+          <a href="/produits/training-course" class="bg-white w-56 h-82 rounded-xl product-card border border-gray-300 hover:border-[#09AFFF] hover:border-2 hover:shadow-lg transition-colors duration-200 ease-out flex flex-col product-card">
+            <img src="https://aquineuro.eu/wp-content/uploads/2022/04/img_0977.jpg" alt="Training course" class="p-6 max-w-48 max-h-36 mx-auto object-contain">
+            <div class="px-4 product-content flex flex-col justify-between h-full">
+              <div>
+                <h3 class="text-sm font-semibold product-title truncate">Training course</h3>
+                <p class="text-gray-400 text-xs mb-4 truncate">Intended for laboratories and research teams, specializing in neuroscience</p>
+                <div class="flex gap-2">
+                  <span class="text-[0.5rem] rounded bg-gray-100 p-1">Electrophysiology</span>
+                </div>
+              </div>
+              <div class="flex flex-col justify-between">
+                <div class="flex-1 text-right py-4 text-[#EB3F4D] h-full flex items-end justify-end">
+                  <i class="fa-solid fa-circle-arrow-right fa-lg" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <!--
+  <section id="contact" class="bg-[#283242] py-16 px-6">
+    <h2 class="text-2xl font-semibold text-white px-6 mb-12">Vous ne trouvez pas ce que vous cherchez ? Contactez-nous !</h2>
+    <div class="flex items-center">
+      <form action="/contact" method="POST" class="max-w-2xl space-y-12 ml-6 flex-1">
+        <div class="flex gap-4">
+          <input type="text" id="name" name="name" placeholder="Nom complet" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out">
+          <input type="email" id="email" name="email" placeholder="Email" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out">
+        </div>
+        <div>
+          <textarea id="message" name="message" placeholder="Message" rows="1" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out"></textarea>
+        </div>
+        <div>
+          <label class="inline-flex items-center text-white">
+            <input type="checkbox" name="subscribe" class="form-checkbox h-4 w-4 text-blue-600 bg-[#283242] border-gray-300 focus:ring-blue-500">
+            <span class="ml-2 text-sm">J'accepte la <a href="/politique-de-confidentialité" class="text-[#09AFFF] underline">politique de confidentialité</a> d'AquiNeuro.</span>
+          </label>
+        </div>
+        <button type="submit" class="bg-[#09AFFF] text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-200 ease-out">
+          Envoyer
+          <i class="fa-solid fa-paper-plane ml-2"></i>
+        </button>
+      </form>
+      <i class="fa-solid fa-comments text-9xl mx-auto mb-6 text-[#6B87B3]"></i>
+    </div>
+  </section>
+  -->
+
+  <footer class="bg-[#283242] text-white py-8 px-6">
+    <div class="mx-auto flex-col justify-between items-center">
+      <img src="https://aquineuro.eu/wp-content/themes/aquineuro/img/logo.svg" alt="AquiNeuro Logo" class="h-12 mb-4">
+      <div class="flex justify-between items-center w-full md:w-auto space-y-4 md:space-y-0 md:space-x-6">
+        <p class="text-sm mb-4 md:mb-0">&copy; 2026 AquiNeuro. Tous droits réservés.</p>
+        <div class="flex space-x-6 items-end">
+          <a href="/mentions-legales" class="text-sm hover:text-gray-400 transition-colors duration-200 ease-out">Mentions légales</a>
+          <a href="/politique-de-confidentialité" class="text-sm hover:text-gray-400 transition-colors duration-200 ease-out">Politique de confidentialité</a>
+          <a href="/conditions-generales-vente" class="text-sm hover:text-gray-400 transition-colors duration-200 ease-out">CGV</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating contact toggle + popup -->
+  <button id="contactToggle" class="contact-toggle" aria-label="Contact" aria-expanded="false" type="button">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <!-- speech bubble (fixed path) -->
+      <g class="icon-bubble" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </g>
+      <!-- down chevron -->
+      <g class="icon-chevron" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9l6 6 6-6" />
+      </g>
+    </svg>
+  </button>
+
+  <!-- Contact popup -->
+  <aside id="contactPopup" class="contact-popup" aria-hidden="true" role="dialog" aria-label="Contact form">
+    <button id="contactClose" class="contact-close hover:text-[#09AFFF] transition-colors duration-300 ease-out" aria-label="Fermer">&times;</button>
+    <h3 class="text-xl mb-12">Contactez-nous</h3>
+    <form action="/contact" method="POST" class="max-w-2xl">
+      <div class="flex gap-4">
+        <input type="text" id="name" name="name" placeholder="Nom complet" required class="mb-4 text-xs w-full px-4 py-2 border-b border-gray-300 bg-white focus:outline-none focus:bg-gray-50 text-[#283242] transition-colors duration-300 ease-out">
+        <input type="email" id="email" name="email" placeholder="Email" required class="mb-4 text-xs w-full px-4 py-2 border-b border-gray-300 bg-white focus:outline-none focus:bg-gray-50 text-[#283242] transition-colors duration-300 ease-out">
+      </div>
+      <div>
+        <textarea id="message" name="message" placeholder="Message" rows="1" required class="mb-4 text-xs w-full px-4 py-2 border-b border-gray-300 bg-white focus:outline-none focus:bg-gray-50 text-[#283242] transition-colors duration-300 ease-out"></textarea>
+      </div>
+      <div class="w-full">
+        <label class="flex justify-start items-center text-[#283242]">
+          <input type="checkbox" name="subscribe" class="form-checkbox text-blue-600 w-4 h-4 bg-[#283242] border-gray-300 focus:ring-blue-500">
+          <span class="text-xs ml-2">J'accepte la <a href="/politique-de-confidentialité" class="text-[#09AFFF] underline">politique de confidentialité</a> d'AquiNeuro.</span>
+        </label>
+      </div>
+      <button type="submit" class="bg-[#09AFFF] text-xs text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-200 ease-out mt-12">
+        Envoyer
+        <i class="fa-solid fa-paper-plane ml-2"></i>
+      </button>
+    </form>
+  </aside>
+
+  <script>
+    (function () {
+      // Dropdown menu functionality
+      const formationsBtn = document.getElementById('formationsBtn');
+      const formationsDropdown = document.getElementById('formationsDropdown');
+      formationsBtn.addEventListener('click', function () {
+        const isExpanded = formationsBtn.getAttribute('aria-expanded') === 'true';
+        formationsBtn.setAttribute('aria-expanded', String(!isExpanded));
+        formationsDropdown.classList.toggle('hidden');
+      });
+      
+      const input = document.getElementById('productSearch');
+      const countEl = document.getElementById('productCount');
+      if (!input) return;
+      const cards = Array.from(document.querySelectorAll('.product-card'));
+
+      function updateCount() {
+        if (!countEl) return;
+        const visible = cards.filter(c => c.style.display !== 'none').length;
+        countEl.textContent = String(visible);
+      }
+
+      // debounce helper
+      let debounceTimer = null;
+      input.addEventListener('input', (ev) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          const q = (ev.target.value || '').trim().toLowerCase();
+          // if fewer than 3 chars => reset (show all)
+          if (q.length < 3) {
+            cards.forEach(c => c.style.display = '');
+            updateCount();
+            return;
+          }
+
+          cards.forEach(card => {
+            const h = card.querySelector('h3') || card.querySelector('.product-title');
+            const txt = h ? (h.textContent || '').trim().toLowerCase() : '';
+            card.style.display = txt.includes(q) ? '' : 'none';
+          });
+          updateCount();
+        }, 160);
+      });
+
+      // update count on load (in case cards are dynamic)
+      window.addEventListener('load', updateCount);
+      // also update after images/fonts might change layout
+      setTimeout(updateCount, 300);
+    })();
+  
+    (function () {
+      const toggle = document.getElementById('contactToggle');
+      const popup = document.getElementById('contactPopup');
+      const closeBtn = document.getElementById('contactClose');
+      const firstField = document.querySelector('#contactPopupForm input, #contactPopupForm textarea');
+
+      if (!toggle || !popup) return;
+
+      function openPopup() {
+        toggle.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        popup.classList.add('open');
+        popup.setAttribute('aria-hidden', 'false');
+        // focus first input
+        if (firstField) setTimeout(() => firstField.focus(), 220);
+      }
+
+      function closePopup() {
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        popup.classList.remove('open');
+        popup.setAttribute('aria-hidden', 'true');
+        toggle.focus();
+      }
+
+      toggle.addEventListener('click', (e) => {
+        const open = popup.classList.contains('open');
+        if (open) closePopup(); else openPopup();
+      });
+
+      closeBtn.addEventListener('click', closePopup);
+
+      // click outside to close
+      document.addEventListener('click', (e) => {
+        if (!popup.classList.contains('open')) return;
+        if (popup.contains(e.target) || toggle.contains(e.target)) return;
+        closePopup();
+      });
+
+      // Esc to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && popup.classList.contains('open')) closePopup();
+      });
+    })();
+  </script>
+</body>
+</html>
