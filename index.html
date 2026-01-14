@@ -6,7 +6,6 @@
 
   <!-- Tailwind CDN (dev only) -->
   <script>
-    /* Tailwind CDN: inject custom theme colors before loading the runtime */
     window.tailwind = window.tailwind || {};
     window.tailwind.config = window.tailwind.config || {};
     window.tailwind.config.theme = window.tailwind.config.theme || {};
@@ -27,13 +26,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
 
   <style>
-    /* use Figtree as main font */
     body {
-      padding-top: 0; /* allow nav to overlay the hero */
+      padding-top: 0;
       font-family: 'Figtree', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
     }
 
-    /* Navbar gradient and solid states */
     .nav-gradient {
       background: linear-gradient(180deg, #283242 0%, rgba(40,50,66,0) 100%);
       transition: background-color 180ms ease, box-shadow 180ms ease;
@@ -45,7 +42,6 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     }
 
-    /* Ensure navbar sits above the hero */
     #siteNav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; }
 
     /* Hero layout */
@@ -68,57 +64,49 @@
       pointer-events: none;
     }
 
-    /* ensure hero content sits above the overlay */
     .hero-content { position: relative; z-index: 10; }
 
-    /* partners marquee */
     .partners-title { color: #283242; margin-bottom: 1.5rem; }
 
     .partner-marquee { overflow: hidden; position: relative; }
 
-    /* marquee container: single row, no wrapping */
     .marquee {
       display: flex;
       gap: 2.5rem;
       align-items: center;
-      flex-wrap: nowrap;            /* prevent groups from wrapping to next line */
+      flex-wrap: nowrap;
       will-change: transform;
       animation: marquee 32s linear infinite;
     }
 
-    /* each group is an inline flex row (will be duplicated in markup) */
     .marquee__group {
       display: flex;
       gap: 2.5rem;
       align-items: center;
-      flex: 0 0 auto;               /* keep each group at its intrinsic width */
+      flex: 0 0 auto;
     }
 
     .partner-item { display: inline-flex; align-items: center; justify-content: center; }
     .partner-logo {
-      max-width: 140px; /* same max width for all logos */
+      max-width: 140px;
       height: auto;
       display: block;
       filter: none;
       opacity: 0.95;
     }
 
-    /* move the whole .marquee left by half its width (since there are two identical groups) */
     @keyframes marquee {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
     }
 
-    /* pause on hover */
     .partner-marquee:hover .marquee { animation-play-state: paused; }
 
-    /* partners marquee (fixed) */
     .partners-wrap { padding-top: 3rem; padding-bottom: 3rem; background: #f7f7f8; }
     .partners-title { color: #283242; margin-bottom: 1.5rem; }
 
     .partner-marquee { overflow: hidden; position: relative; }
 
-    /* marquee is a single flex row that contains two identical groups */
     .marquee {
       display: flex;
       gap: 2.5rem;
@@ -131,12 +119,12 @@
       display: flex;
       gap: 2.5rem;
       align-items: center;
-      flex: 0 0 auto; /* prevent groups from shrinking */
+      flex: 0 0 auto;
     }
 
     .partner-item { display: inline-flex; align-items: center; justify-content: center; }
     .partner-logo {
-      max-width: 140px; /* same max width for all logos */
+      max-width: 140px;
       height: auto;
       display: block;
       filter: none;
@@ -145,15 +133,13 @@
 
     @keyframes marquee {
       from { transform: translateX(0); }
-      to   { transform: translateX(-100%); } /* move left by half (since content duplicated) */
+      to   { transform: translateX(-100%); }
     }
 
-    /* pause on hover */
     .partner-marquee:hover .marquee { animation-play-state: paused; }
 
     .partner-marquee { overflow: hidden; position: relative; }
 
-    /* single track that will translate left to -100% then snap (single-pass) */
     .marquee {
       display: flex;
       gap: 2.5rem;
@@ -184,10 +170,8 @@
       to   { transform: translateX(-100%); } /* move entire track left, then jump back to start */
     }
 
-    /* pause on hover */
     .partner-marquee:hover .marquee { animation-play-state: paused; }
 
-    /* article card overlay (for news / article tiles) */
     .article-card {
       position: relative;
       overflow: hidden;
@@ -195,7 +179,6 @@
     .article-card .article-overlay {
       position: absolute;
       inset: 0;
-      /* transparent at top -> black at bottom */
       background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(11, 32, 51, 0.5) 38%, rgba(0,0,0,1) 100%);
       z-index: 0;
       pointer-events: none;
@@ -207,37 +190,33 @@
       color: #ffffff;
     }
 
-    /* Slide-right on hover for the chevron icon */
     .fa-circle-arrow-right {
-      display: inline-block; /* required so transform applies predictably */
+      display: inline-block;
       transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease;
       transform: translateX(0);
       will-change: transform;
     }
 
     .article-card:hover .fa-circle-arrow-right {
-      transform: translateX(8px); /* slide right on hover */
+      transform: translateX(8px);
       opacity: 1;
     }
 
     .product-card:hover .fa-circle-arrow-right {
-      transform: translateX(8px); /* slide right on hover */
+      transform: translateX(8px);
       opacity: 1;
     }
 
-    /* optional: slightly darken overlay on hover */
     .article-card:hover .article-overlay { opacity: 0.95; }
 
-    /* carousel track styles (JS will wrap items into .carousel-track) */
     #article-carousel { position: relative; overflow: hidden; }
     .carousel-track {
       display: flex;
-      gap: 2rem; /* matches your .gap-8 (32px) layout; adjust if needed */
+      gap: 2rem;
       transition: transform 320ms cubic-bezier(.2,.9,.2,1);
       will-change: transform;
     }
 
-    /* disabled arrow */
     button[disabled] {
       opacity: 0.45;
       cursor: default;
@@ -246,21 +225,19 @@
 
     .product-card .fa-circle-arrow-right {
       display: inline-block;
-      transform: translateX(10px); /* start slightly right (off-screen) */
+      transform: translateX(10px);
       opacity: 0;
       transition: transform 220ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease;
       will-change: transform, opacity;
       pointer-events: none;
     }
 
-    /* show on hover or keyboard focus */
     .product-card:hover .fa-circle-arrow-right,
     .product-card:focus-within .fa-circle-arrow-right {
       transform: translateX(0);
       opacity: 1;
     }
 
-    /* Floating toggle */
     .contact-toggle {
       position: fixed;
       left: 1rem;
@@ -268,7 +245,7 @@
       width: 56px;
       height: 56px;
       border-radius: 9999px;
-      background: #09AFFF; /* aquineuro-blue */
+      background: #09AFFF;
       color: white;
       display: inline-flex;
       align-items: center;
@@ -280,7 +257,6 @@
     }
     .contact-toggle:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(2,10,35,0.2); }
 
-    /* Popup */
     .contact-popup {
       position: fixed;
       right: 1rem;
@@ -314,7 +290,6 @@
       cursor: pointer;
     }
 
-    /* svg "morph" (fade+translate) */
     .contact-toggle svg { width: 22px; height: 22px; display: block; }
     .contact-toggle .icon-bubble,
     .contact-toggle .icon-chevron {
@@ -402,7 +377,7 @@
     </div>
   </header>
 
-  <!-- Partners section (rendered by script.js) -->
+  <!-- Partners -->
   <section id="partners" class="bg-white py-8" aria-label="Partners">
     <div class="">
       <h2 class="text-2xl font-semibold text-[#283242] partners-title px-6">Nous tenons à remercier tous ceux qui nous ont accordé leur confiance</h2>
@@ -415,15 +390,15 @@
     </div>
   </section>
 
-  <!-- Expertise (will be filled by script.js) -->
+  <!-- Expertise -->
   <section id="expertise" class="bg-gray-100 py-16">
     <h2 class="text-3xl max-w-5xl font-semibold text-center text-[#283242] mb-8 mx-auto">Nous vous proposons notre expérience tout au long du processus d'innovation: de la conception à la publication</h2>
     <div class="flex my-16 mx-auto items-center justify-center gap-8 max-w-6xl px-6" data-content="expertise">
-      <!-- cards injected here -->
+      <!-- expertise cards -->
     </div>
   </section>
 
-  <!-- Services (will be filled by script.js) -->
+  <!-- Services -->
   <section id="services" class="py-16 mx-auto px-6">
     <h2 class="text-3xl font-semibold text-center text-[#283242] mb-8 mx-auto" data-content="services.title">Découvrez nos services</h2>
     <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12" data-content="services.description"> </p>
@@ -432,37 +407,11 @@
     </div>
   </section>
 
-  <!--
-  <section id="news" class="bg-gray-100 py-16">
-    <div class="flex justify-between items-center px-6 mb-4">
-      <h2 class="text-2xl font-semibold text-[#283242] px-6">Actualités</h2>
-      <div class="flex justify-center items-center px-6">
-        <button id="carouselPrev" class="px-4 py-2 text-[#09AFFF] rounded transition-colors duration-200 ease-out" aria-label="Précédent" disabled>
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <button id="carouselNext" class="ml-3 px-4 py-2 text-[#09AFFF] rounded transition-colors duration-200 ease-out" aria-label="Suivant">
-          <i class="fa-solid fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
-
-    <div id="article-carousel" class="flex gap-8 overflow-hidden" data-content="news"></div>
-
-    <div class="text-center mt-8">
-      <a href="actualites.html" class="text-[#09AFFF] font-medium inline-flex items-center gap-2 hover:text-blue-400">
-        Voir toutes les actualités
-        <i class="fa-solid fa-arrow-right"></i>
-      </a>
-    </div>
-  </section>
-  -->
-
   <!-- News / Articles carousel -->
   <section id="news-alt" class="bg-[#283242] py-16">
     <div class="flex justify-between items-center px-6 mb-8">
       <h2 class="text-2xl font-semibold text-white px-6">Actualités</h2>
       <div class="flex justify-center items-center px-6">
-        <!-- article carousel uses these IDs (kept for existing JS) -->
         <button id="carouselPrev" class="px-4 py-2 text-[#09AFFF] rounded transition-colors duration-200 ease-out" aria-label="Précédent" disabled>
           <i class="fa-solid fa-chevron-left"></i>
         </button>
@@ -548,40 +497,11 @@
     </div>
   </section>
 
-  <!--
-  <section id="contact" class="bg-[#283242] py-16 px-6">
-    <h2 class="text-2xl font-semibold text-white px-6 mb-12">Pour en savoir plus, écrivez-nous !</h2>
-    <div class="flex items-center">
-      <form action="/contact" method="POST" class="max-w-2xl space-y-12 ml-6 flex-1">
-        <div class="flex gap-4">
-          <input type="text" id="name" name="name" placeholder="Nom complet" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out">
-          <input type="email" id="email" name="email" placeholder="Email" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out">
-        </div>
-        <div>
-          <textarea id="message" name="message" placeholder="Message" rows="1" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out"></textarea>
-        </div>
-        <div>
-          <label class="inline-flex items-center text-white">
-            <input type="checkbox" name="subscribe" class="form-checkbox h-4 w-4 text-blue-600 bg-[#283242] border-gray-300 focus:ring-blue-500">
-            <span class="ml-2 text-sm">J'accepte la <a href="/politique-de-confidentialité" class="text-[#09AFFF] underline">politique de confidentialité</a> d'AquiNeuro.</span>
-          </label>
-        </div>
-        <button type="submit" class="bg-[#09AFFF] text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-200 ease-out">
-          Envoyer
-          <i class="fa-solid fa-paper-plane ml-2"></i>
-        </button>
-      </form>
-      <i class="fa-solid fa-comments text-9xl mx-auto mb-6 text-[#6B87B3]"></i>
-    </div>
-  </section>
-  -->
-
-  <!-- Products carousel (buttons scoped to the section via aria-labels; no duplicate IDs) -->
+  <!-- Products carousel -->
   <section id="suggested-products" class="py-16 px-6">
     <div class="flex justify-between items-center px-6 mb-4">
       <h2 class="text-2xl font-semibold text-[#283242] px-6">Les produits suivants ont tous été testés et approuvés par Aquineuro :</h2>
       <div class="flex justify-center items-center px-6">
-        <!-- product carousel uses buttons found by aria-label inside the same section -->
         <button class="px-4 py-2 text-[#EB3F4D] rounded transition-colors duration-200 ease-out" aria-label="Précédent" disabled>
           <i class="fa-solid fa-chevron-left"></i>
         </button>
@@ -618,11 +538,9 @@
   <!-- Floating contact toggle + popup -->
   <button id="contactToggle" class="contact-toggle" aria-label="Contact" aria-expanded="false" type="button">
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-      <!-- speech bubble (fixed path) -->
       <g class="icon-bubble" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </g>
-      <!-- down chevron -->
       <g class="icon-chevron" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M6 9l6 6 6-6" />
       </g>
@@ -657,10 +575,9 @@
   <!-- load dynamic renderer first -->
   <script src="script.js"></script>
 
-  <!-- inline behavior (carousels, nav dropdown) -->
+  <!-- inline behavior -->
   <script>
     (function () {
-      // dropdown logic (existing)
       const btn = document.getElementById('formationsBtn');
       const dropdown = document.getElementById('formationsDropdown');
 
@@ -675,7 +592,6 @@
         }
       });
 
-      // navbar scroll direction logic (existing)
       const nav = document.getElementById('siteNav');
       let lastY = window.scrollY;
 
@@ -691,21 +607,18 @@
         }
       }, { passive: true });
 
-      // ---- article carousel controller (existing) ----
       const initArticleCarousel = () => {
         const viewport = document.getElementById('article-carousel');
         if (!viewport) return;
 
-        // if already wrapped, skip
         if (viewport.querySelector('.carousel-track')) {
           setupCarouselControls(viewport, viewport.querySelector('.carousel-track'));
           return;
         }
-
-        // wrap children into track
+ 
         const track = document.createElement('div');
         track.className = 'carousel-track';
-        // move all direct children (cards) into track
+
         while (viewport.firstChild) {
           track.appendChild(viewport.firstChild);
         }
@@ -727,9 +640,7 @@
         const recalc = () => {
           const first = track.children[0];
           if (!first) return;
-          // prevent wrapping for consistent measurements
           track.style.flexWrap = 'nowrap';
-          // compute gap robustly using bounding rects
           let measuredGap = 0;
           if (track.children.length > 1) {
             const r1 = first.getBoundingClientRect();
@@ -738,7 +649,6 @@
           }
           gap = measuredGap;
           itemWidth = Math.round(first.getBoundingClientRect().width + gap);
-          // ensure track width matches content
           track.style.width = `${track.scrollWidth}px`;
           const visibleCount = Math.max(1, Math.floor(viewport.clientWidth / itemWidth));
           maxIndex = Math.max(0, track.children.length - visibleCount);
@@ -763,16 +673,13 @@
           update();
         });
 
-        // handle window resize
         let resizeTimer = null;
         window.addEventListener('resize', () => {
           clearTimeout(resizeTimer);
           resizeTimer = setTimeout(recalc, 120);
         });
 
-        // initial calculate after next paint (images may affect sizes)
         requestAnimationFrame(() => {
-          // wait for images to load if any
           const imgs = track.querySelectorAll('img');
           if (imgs.length === 0) { recalc(); return; }
           let remaining = imgs.length;
@@ -794,18 +701,15 @@
         });
       }
 
-      // ---- product carousel controller (new, same behaviour but scoped to product section) ----
       const initProductCarousel = () => {
         const viewport = document.getElementById('product-carousel');
         if (!viewport) return;
 
-        // if already wrapped, skip
         if (viewport.querySelector('.carousel-track')) {
           setupProductControls(viewport, viewport.querySelector('.carousel-track'));
           return;
         }
 
-        // wrap children into track
         const track = document.createElement('div');
         track.className = 'carousel-track';
         while (viewport.firstChild) {
@@ -817,7 +721,6 @@
       };
 
       function setupProductControls(viewport, track) {
-        // find the prev/next buttons inside the same section to avoid ID collisions
         const section = viewport.closest('section');
         const prevBtn = section ? section.querySelector('button[aria-label="Précédent"]') : null;
         const nextBtn = section ? section.querySelector('button[aria-label="Suivant"]') : null;
@@ -831,9 +734,7 @@
         const recalc = () => {
           const first = track.children[0];
           if (!first) return;
-          // prevent wrapping for consistent measurements
           track.style.flexWrap = 'nowrap';
-          // compute gap robustly using bounding rects
           let measuredGap = 0;
           if (track.children.length > 1) {
             const r1 = first.getBoundingClientRect();
@@ -842,7 +743,6 @@
           }
           gap = measuredGap;
           itemWidth = Math.round(first.getBoundingClientRect().width + gap);
-          // ensure track width matches content
           track.style.width = `${track.scrollWidth}px`;
           const visibleCount = Math.max(1, Math.floor(viewport.clientWidth / itemWidth));
           maxIndex = Math.max(0, track.children.length - visibleCount);
@@ -895,12 +795,10 @@
         });
       }
 
-      // init on DOM ready
       document.addEventListener('DOMContentLoaded', () => {
         initArticleCarousel();
         initProductCarousel();
       });
-      // also init in case this runs after DOMContentLoaded
       initArticleCarousel();
       initProductCarousel();
     })();
@@ -918,7 +816,6 @@
         toggle.setAttribute('aria-expanded', 'true');
         popup.classList.add('open');
         popup.setAttribute('aria-hidden', 'false');
-        // focus first input
         if (firstField) setTimeout(() => firstField.focus(), 220);
       }
 
@@ -937,14 +834,12 @@
 
       closeBtn.addEventListener('click', closePopup);
 
-      // click outside to close
       document.addEventListener('click', (e) => {
         if (!popup.classList.contains('open')) return;
         if (popup.contains(e.target) || toggle.contains(e.target)) return;
         closePopup();
       });
 
-      // Esc to close
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && popup.classList.contains('open')) closePopup();
       });

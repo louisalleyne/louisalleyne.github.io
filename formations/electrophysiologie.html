@@ -40,40 +40,36 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=pest_control_rodent" />
 
   <style>
-    /* use Figtree as main font */
     body {
-      padding-top: 0; /* allow nav to overlay the hero */
+      padding-top: 0;
       font-family: 'Figtree', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
     }
 
-    /* Navbar gradient and solid states */
     .nav-white {
       background-color: white !important;
       box-shadow: 0 6px 18px rgba(0,0,0,0.25);
       color: #283242 !important;
     }
 
-    /* Arrow slide-in: hide arrow by default and slide in on hover/focus */
     .product-card {
       position: relative;
-      overflow: hidden; /* keep sliding arrow clipped */
+      overflow: hidden;
     }
     .product-card .fa-circle-arrow-right {
       display: inline-block;
-      transform: translateX(10px); /* start slightly right (off-screen) */
+      transform: translateX(10px);
       opacity: 0;
       transition: transform 220ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease;
       will-change: transform, opacity;
       pointer-events: none;
     }
-    /* show on hover or keyboard focus */
+    
     .product-card:hover .fa-circle-arrow-right,
     .product-card:focus-within .fa-circle-arrow-right {
       transform: translateX(0);
       opacity: 1;
     }
 
-    /* Floating toggle */
     .contact-toggle {
       position: fixed;
       left: 1rem;
@@ -81,7 +77,7 @@
       width: 56px;
       height: 56px;
       border-radius: 9999px;
-      background: #09AFFF; /* aquineuro-blue */
+      background: #09AFFF;
       color: white;
       display: inline-flex;
       align-items: center;
@@ -93,7 +89,6 @@
     }
     .contact-toggle:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(2,10,35,0.2); }
 
-    /* Popup */
     .contact-popup {
       position: fixed;
       right: 1rem;
@@ -127,7 +122,6 @@
       cursor: pointer;
     }
 
-    /* svg "morph" (fade+translate) */
     .contact-toggle svg { width: 22px; height: 22px; display: block; }
     .contact-toggle .icon-bubble,
     .contact-toggle .icon-chevron {
@@ -393,34 +387,6 @@
    
   </main>
 
-  <!--
-  <section id="contact" class="bg-[#283242] py-16 px-6">
-    <h2 class="text-2xl font-semibold text-white px-6 mb-12">Vous ne trouvez pas ce que vous cherchez ? Contactez-nous !</h2>
-    <div class="flex items-center">
-      <form action="/contact" method="POST" class="max-w-2xl space-y-12 ml-6 flex-1">
-        <div class="flex gap-4">
-          <input type="text" id="name" name="name" placeholder="Nom complet" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out">
-          <input type="email" id="email" name="email" placeholder="Email" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out">
-        </div>
-        <div>
-          <textarea id="message" name="message" placeholder="Message" rows="1" required class="w-full px-4 py-2 border-b border-gray-300 bg-[#283242] focus:outline-none focus:bg-[#39475E] text-white transition-colors duration-300 ease-out"></textarea>
-        </div>
-        <div>
-          <label class="inline-flex items-center text-white">
-            <input type="checkbox" name="subscribe" class="form-checkbox h-4 w-4 text-blue-600 bg-[#283242] border-gray-300 focus:ring-blue-500">
-            <span class="ml-2 text-sm">J'accepte la <a href="/politique-de-confidentialité" class="text-[#09AFFF] underline">politique de confidentialité</a> d'AquiNeuro.</span>
-          </label>
-        </div>
-        <button type="submit" class="bg-[#09AFFF] text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-200 ease-out">
-          Envoyer
-          <i class="fa-solid fa-paper-plane ml-2"></i>
-        </button>
-      </form>
-      <i class="fa-solid fa-comments text-9xl mx-auto mb-6 text-[#6B87B3]"></i>
-    </div>
-  </section>
-  -->
-
   <footer class="bg-[#283242] text-white py-8 px-6">
     <div class="mx-auto flex-col justify-between items-center">
       <img src="https://aquineuro.eu/wp-content/themes/aquineuro/img/logo.svg" alt="AquiNeuro Logo" class="h-12 mb-4">
@@ -438,11 +404,9 @@
   <!-- Floating contact toggle + popup -->
   <button id="contactToggle" class="contact-toggle" aria-label="Contact" aria-expanded="false" type="button">
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-      <!-- speech bubble (fixed path) -->
       <g class="icon-bubble" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </g>
-      <!-- down chevron -->
       <g class="icon-chevron" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M6 9l6 6 6-6" />
       </g>
@@ -476,7 +440,6 @@
 
   <script>
     (function () {
-      // Dropdown menu functionality
       const formationsBtn = document.getElementById('formationsBtn');
       const formationsDropdown = document.getElementById('formationsDropdown');
       formationsBtn.addEventListener('click', function () {
@@ -497,8 +460,7 @@
         toggle.classList.add('open');
         toggle.setAttribute('aria-expanded', 'true');
         popup.classList.add('open');
-        popup.setAttribute('aria-hidden', 'false');
-        // focus first input
+        popup.setAttribute('aria-hidden', 'false'); 
         if (firstField) setTimeout(() => firstField.focus(), 220);
       }
 
@@ -517,14 +479,12 @@
 
       closeBtn.addEventListener('click', closePopup);
 
-      // click outside to close
       document.addEventListener('click', (e) => {
         if (!popup.classList.contains('open')) return;
         if (popup.contains(e.target) || toggle.contains(e.target)) return;
         closePopup();
       });
 
-      // Esc to close
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && popup.classList.contains('open')) closePopup();
       });
