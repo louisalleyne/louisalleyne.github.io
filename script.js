@@ -1,7 +1,6 @@
 fetch("content.json")
   .then(response => response.json())
   .then(data => {
-    // simple text bindings: elements with data-content="key" -> value (string)
     document.querySelectorAll("[data-content]").forEach(el => {
       const key = el.dataset.content;
       const value = key.split('.').reduce((o, k) => (o ? o[k] : undefined), data);
@@ -10,7 +9,6 @@ fetch("content.json")
       }
     });
 
-    // hero links and background
     if (data.hero) {
       const hero = data.hero;
       const header = document.getElementById('hero');
@@ -19,7 +17,6 @@ fetch("content.json")
         header.style.backgroundSize = 'cover';
         header.style.backgroundPosition = 'center';
       }
-      // set link hrefs if present
       [['hero.link1', 'hero.link1'], ['hero.link2', 'hero.link2']].forEach(([attr, key]) => {
         const els = document.querySelectorAll(`[data-content-link="${attr}"], [data-content-link="${key}"]`);
         els.forEach(el => {
@@ -29,16 +26,13 @@ fetch("content.json")
       });
     }
 
-    // render partners list (array)
     if (Array.isArray(data.partners)) {
       renderPartners(data.partners);
     }
 
-    // render news and products arrays
     if (Array.isArray(data.news)) renderNews(data.news);
     if (Array.isArray(data.products)) renderProducts(data.products);
 
-    // render expertise and services
     if (Array.isArray(data.expertise)) renderExpertise(data.expertise);
     if (data.services) renderServices(data.services);
 
@@ -46,9 +40,6 @@ fetch("content.json")
   .catch(error => {
     console.error("Failed to load content:", error);
   });
-
-// Render helpers (exports not needed; used internally)
-// Exposed names for reference: [`renderPartners`](script.js), [`renderNews`](script.js), [`renderProducts`](script.js), [`renderExpertise`](script.js), [`renderServices`](script.js)
 function renderPartners(partners) {
   const container = document.querySelector('[data-content="partners"]');
   if (!container) return;
@@ -98,7 +89,6 @@ function renderNews(news) {
 function renderProducts(products) {
   if (!Array.isArray(products)) return;
 
-  // find candidate containers where product cards should go
   const selectors = [
     '[data-content="products"]',
     '.products-grid',
@@ -109,7 +99,6 @@ function renderProducts(products) {
   selectors.forEach(sel => {
     document.querySelectorAll(sel).forEach(el => containers.push(el));
   });
-  // if none found, fallback to the first .product-container or body
   if (containers.length === 0) {
     const fallback = document.querySelector('.product-container') || document.body;
     containers.push(fallback);
@@ -119,7 +108,6 @@ function renderProducts(products) {
     const a = document.createElement('a');
     a.href = prod.link || '#';
     a.className = 'bg-white w-56 h-82 rounded-xl product-card border border-gray-300 hover:border-[#09AFFF] hover:border-2 hover:shadow-lg transition-colors duration-200 ease-out flex flex-col';
-    // image
     if (prod.image) {
       const img = document.createElement('img');
       img.src = prod.image;
@@ -127,7 +115,6 @@ function renderProducts(products) {
       img.className = 'p-6 max-w-48 max-h-36 mx-auto object-contain';
       a.appendChild(img);
     }
-    // content wrapper
     const content = document.createElement('div');
     content.className = 'px-4 product-content flex flex-col justify-between h-full';
 
@@ -159,7 +146,6 @@ function renderProducts(products) {
 
     content.appendChild(top);
 
-    // arrow area (hidden unless hovered — CSS already present)
     const bottomWrap = document.createElement('div');
     bottomWrap.className = 'flex flex-col justify-between mt-4';
     const arrowWrap = document.createElement('div');
@@ -172,22 +158,18 @@ function renderProducts(products) {
     return a;
   };
 
-  // render into each container
   containers.forEach(container => {
     container.innerHTML = '';
     products.forEach(p => container.appendChild(createCard(p)));
   });
 
-  // update product counts if present
   const countEl = document.getElementById('productCount');
   if (countEl) countEl.textContent = String(products.length);
 }
 
-/* --- NEW: renderExpertise --- */
 function renderExpertise(expertise) {
   const section = document.getElementById('expertise');
   if (!section) return;
-  // target the container that currently holds the three boxes
   const container = section.querySelector('div.flex');
   if (!container) return;
   container.innerHTML = '';
@@ -205,11 +187,9 @@ function renderExpertise(expertise) {
   });
 }
 
-/* --- NEW: renderServices --- */
 function renderServices(services) {
   const section = document.getElementById('services');
   if (!section) return;
-  // set title/description if present
   if (services.title) {
     const h = section.querySelector('h2');
     if (h) h.textContent = services.title;
@@ -218,7 +198,6 @@ function renderServices(services) {
     const p = section.querySelector('p');
     if (p) p.textContent = services.description;
   }
-  // find the cards container (the large flex wrapper directly under section)
   const cardsContainer = section.querySelector(':scope > .flex');
   if (!cardsContainer) return;
   cardsContainer.innerHTML = '';
